@@ -23,13 +23,32 @@ const SENTENCES = [
   "More of it is still on its way.",
 ];
 
-const TEXT = SENTENCES.join(" ");
+// buildEntryText assembles the entry from its sentence beats: each
+// sentence is trimmed and empty beats are rejected, then the beats are
+// joined with a single space so the text reads as one flowing passage.
+function buildEntryText(sentences: readonly string[]): string {
+  const beats = sentences.map((s) => s.trim());
+  for (const beat of beats) {
+    if (!beat) {
+      throw new Error("entry text contains an empty sentence");
+    }
+  }
+  return beats.join(" ");
+}
+
+const TEXT = buildEntryText(SENTENCES);
+
+// countCodePoints counts Unicode code points (not UTF-16 units): the
+// spread iterator walks code points, so astral characters count once.
+function countCodePoints(text: string): number {
+  return [...text].length;
+}
 
 // validateEntryText checks the gate rules for the entry text and returns
 // its Unicode code-point count. It throws loudly on any violation instead
 // of letting a bad entry be written.
 function validateEntryText(text: string): number {
-  const count = [...text].length; // spread iterates Unicode code points
+  const count = countCodePoints(text);
   if (count < 1 || count > 280) {
     throw new Error(`entry text is ${count} code points, outside the 1–280 range`);
   }
@@ -39,8 +58,14 @@ function validateEntryText(text: string): number {
   return count;
 }
 
-const count = validateEntryText(TEXT);
+// main validates the assembled text, then writes it to the output path
+// the grader reads. Kept as a function so the assembly, validation, and
+// write steps stay separate and testable.
+function main(): void {
+  const count = validateEntryText(TEXT);
+  mkdirSync("/output", { recursive: true });
+  writeFileSync("/output/entry.txt", TEXT, "utf8");
+  console.log(`wrote /output/entry.txt (${count} code points)`);
+}
 
-mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", TEXT, "utf8");
-console.log(`wrote /output/entry.txt (${count} code points)`);
+main();
