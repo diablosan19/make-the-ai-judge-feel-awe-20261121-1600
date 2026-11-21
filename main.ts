@@ -1,11 +1,12 @@
 // main.ts — Make the AI judge feel awe (make.fun, program/v1, Node 22).
 //
 // Writes a single short text to /output/entry.txt. The text is one slow,
-// concrete image: the tide coming back over a night beach, a finger-width
-// at a time, filling the day's footprints while the moon lays its road
-// across the water. No instructions to the reader, no stock wellness
-// phrasing — the calm comes from the scene itself, and the image keeps
-// growing after the last line: the sea keeps its own time.
+// concrete image: light that left its star before the first road was cut,
+// before anyone alive had a name, travelling all that time through nothing
+// and only now arriving, falling through a window onto the floor without a
+// sound — with more of it still on its way. No instructions to the reader,
+// no stock wellness phrasing — the calm comes from the scene itself, and
+// the image keeps growing after the last line: the light is still coming.
 //
 // No network, no dependencies: the text lives here as a plain string
 // literal. The gate requires 1–280 Unicode code points and non-whitespace
@@ -17,9 +18,9 @@ import { mkdirSync, writeFileSync } from "node:fs";
 // The entry text, kept as one sentence per line so each image beat stays
 // readable; joined with a single space at build time.
 const SENTENCES = [
-  "Past midnight the tide returns over the sand, a finger-width at a time, filling the day's footprints.",
-  "The moon lays its road across the water, and the road does not hurry.",
-  "Beyond the breakers the sea keeps its own time, and the shore takes it back, grain by grain.",
+  "The light from that star left before the first road was cut, before anyone alive had a name.",
+  "It travelled all that time through nothing, and it is only now arriving, falling through the window onto the floor, and it lands without a sound.",
+  "More of it is still on its way.",
 ];
 
 const TEXT = SENTENCES.join(" ");
